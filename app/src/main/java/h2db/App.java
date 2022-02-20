@@ -3,18 +3,43 @@
  */
 package h2db;
 
-import java.sql.SQLException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import h2db.data.H2DBSample;
+import h2db.data.Users;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         H2DBSample h2dbSample = new H2DBSample();
         h2dbSample.initExe();
+
+        try (InputStream in = App.class.getResourceAsStream("/mybatis-config.xml")) {
+            // ★設定ファイルを元に、 SqlSessionFactory を作成する
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(in, "development");
+
+            // ★SqlSessionFactory から SqlSession を生成する
+            try (SqlSession session = factory.openSession()) {
+                // ★SqlSession を使って SQL を実行する
+                List<Users> result = session.selectList("sample.mybatis.selectTest");
+
+                result.forEach(value -> {
+                    System.out.println(value);
+                });
+            }
+        }
+
 
         while(true){
             try {

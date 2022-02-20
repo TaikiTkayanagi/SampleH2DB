@@ -49,7 +49,7 @@ public class H2DBSample {
     public void initExe(){
         Driver.load();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:test;", "sa", "")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;mode=Oracle", "sa", "")) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(this.getCreateSql());
         } catch (SQLException e) {
