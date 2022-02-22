@@ -11,6 +11,7 @@ import java.util.Map;
 
 import h2db.data.H2DBSample;
 import h2db.data.Users;
+import h2db.data.top;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -32,7 +33,7 @@ public class App {
             // ★SqlSessionFactory から SqlSession を生成する
             try (SqlSession session = factory.openSession()) {
                 // ★SqlSession を使って SQL を実行する
-                List<Users> result = session.selectList("sample.mybatis.selectTest");
+                List<top> result = session.selectList("sample.mybatis.selectTest");
 
                 result.forEach(value -> {
                     System.out.println(value);
